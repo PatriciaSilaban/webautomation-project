@@ -10,7 +10,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 public class LocatorPractice {
-
     public static void main(String[] args) throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "C:/afterofficebootcamp/webautomationproject/chromedriver.exe");
 
@@ -20,30 +19,32 @@ public class LocatorPractice {
 
         Thread.sleep(5000);
 
-        // SELECT CURRENCY FEATURE
-        WebElement staticDropdown = driver.findElement(By.name("ctl00$mainContent$DropDownListCurrency"));
+        /*
+         * Select currency
+         * condition : dropdown
+         */
+
+        WebElement staticDropdown = driver.findElement(By.id("ctl00_mainContent_DropDownListCurrency"));
 
         Select dropdown = new Select(staticDropdown);
-        System.out.println("All option " + dropdown.getAllSelectedOptions().size());
-        System.out.println("First option: " + dropdown.getFirstSelectedOption().getText());
+        System.out.println("All option" + dropdown.getAllSelectedOptions().size());
+        System.out.println("First option" + dropdown.getFirstSelectedOption().getText());
 
         dropdown.selectByVisibleText("AED");
-        System.out.println("Selected option: " + dropdown.getFirstSelectedOption().getText());
-
-        // Thread.sleep(5000);
+        System.out.println("AED" + dropdown.getFirstSelectedOption().getText());
 
         dropdown.selectByValue("USD");
 
         dropdown.selectByIndex(1);
 
-        // Thread.sleep(5000);
-
         /*
-         * Handle dynamic dropdown PASSENGER Feauture
+         * Handle dynamic dropdown
          */
 
         driver.findElement(By.id("divpaxinfo")).click();
-        Thread.sleep(2000);
+
+        Thread.sleep(4000);
+
         /*
          * Menambahkan passenger (adult)
          */
@@ -69,61 +70,85 @@ public class LocatorPractice {
             driver.findElement(By.id("hrefDecAdt")).click();
             Thread.sleep(4000);
         }
+
+        Thread.sleep(4000);
+
         driver.findElement(By.id("btnclosepaxoption")).click();
+
         Thread.sleep(4000);
 
         /*
-         * Scenario select FROM
-         * DELHI =
-         * //div[@id="dropdownGroup1"]//child[@class="dropdownDiv"]//child::ul[1]//child
-         * ::li//child::a[@value="DEL"]
+         * Scenario select From
+         * Delhi =
+         * //div[@id="dropdownGroup1"]//child::div[@class="dropdownDiv"]//child::ul[1]//
+         * child::li//child::a[@value="DEL"]
          */
+
         driver.findElement(By.id("ctl00_mainContent_ddl_originStation1_CTXT")).click();
 
-        // // kurang efisien digunakan karena tidak dynamic (akan selalu mengganti
-        // xpathnya)
-        // driver.findElement(By.xpath(
-        // "//div[@id='dropdownGroup1']//div[@class='dropdownDiv']//ul[1]//li//a[@value='DEL']")).click();
+        // WebElement countryDelhi =
+        // driver.findElement(By.xpath("//div[@id='dropdownGroup1']//child::div[@class='dropdownDiv']//child::ul[1]//child::li//child::a[@value='Bengalure']"));
 
-        // CARA LAIN UNTUK SCENARIO SELECT FROM
-        List<WebElement> options = driver
-                .findElements(By.xpath(
-                        "//div[@id='dropdownGroup1']//child::div[@class='dropdownDiv']//child::ul[1]//child::li"));
-        System.out.println("Ini adalah options" + options);
+        List<WebElement> options = driver.findElements(
+                By.xpath("//div[@id='dropdownGroup1']//child::div[@class='dropdownDiv']//child::ul[1]//child::li"));
+        System.out.println("ini adalah options" + options);
 
         for (WebElement element : options) {
-            System.out.println("List country" + element.getText());
-            if (element.getText().equals("Adampur (AIP)"))
+            // System.out.println("list country" + element.getText());
+            if (element.getText().equals("Delhi (DEL)")) {
                 element.click();
-            break;
+                break;
+            }
         }
+
         Thread.sleep(4000);
 
-        // // SCENARIO SELECT TO (KALAU MENGGUNAKAN XPATH)
-        // driver.findElement(By.id("ctl00_mainContent_ddl_destinationStation1_CTXT")).click();
-        // driver.findElement(By.xpath(
-        // "//div[@id='dropdownGroup1']//div[@class='dropdownDiv']//child::ul[1]//child::li//child::a[@value='MAA']"))
-        // .click();
-        // Thread.sleep(2000);
+        /*
+         * Arrival City
+         */
 
-        // // CARA LAIN UNTUK SCENARIO SELECT TO
-        List<WebElement> options1 = driver.findElements(
-                By.xpath("//div[@id='dropdownGroup1']//div[@class='dropdownDiv']//child::ul[1]//child::li"));
-        System.out.println("Ini adalah options" + options1);
+        List<WebElement> arrivalCity = driver.findElements(By
+                .xpath("(//div[@id='dropdownGroup1']//child::div[@class='dropdownDiv']//child::ul[1])[2]//child::li"));
 
-        for (WebElement element : options1) {
-            System.out.println("List country" + element.getText());
-            if (element.getText().equals("Chennai (MAA)"))
+        for (WebElement element : arrivalCity) {
+            System.out.println("list country" + element.getText());
+            if (element.getText().equals("Chennai (MAA)")) {
                 element.click();
-            break;
+                break;
+            }
         }
 
-        // --------------------------***----------------------------//
-        // ANW UNTUK SELECT TO MASIH ERROR SAAT DI RUN //
+        Thread.sleep(3000);
 
-        // SCENARIO RADIO BUTTON
+        // Handle suggestion
+        driver.findElement(By.xpath("(//*[@id='autosuggest'])[1]")).sendKeys("ind");
+
+        Thread.sleep(3000);
+
+        driver.findElement(By.xpath("//a[@id='ui-id-5']")).click();
+
+        // Thread.sleep(3000);
+
+        List<WebElement> country = driver.findElements(By.cssSelector("li[class='ui-menu-item'] a"));
+
+        for (WebElement webElement : country) {
+            System.out.println("Ini adalah negara " + webElement.getText());
+            if (webElement.getText().equals("Indonesia")) {
+                webElement.click();
+                break;
+            }
+        }
+
+        Thread.sleep(3000);
+
+        // Hande radio button
         driver.findElement(By.id("ctl00_mainContent_rbtnl_Trip_0")).click();
-        Thread.sleep(4000);
+
+        // Handle checkbox
+        driver.findElement(By.id("ctl00_mainContent_chk_friendsandfamily")).click();
+
+        Thread.sleep(3000);
+
         driver.close();
     }
 }
