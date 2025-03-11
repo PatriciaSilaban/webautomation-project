@@ -16,17 +16,33 @@ public class SwitchWindowExample {
         driver.get("https://rahulshettyacademy.com/AutomationPractice/");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
+        // Menyimpan window handle awal
+        String originalWindow = driver.getWindowHandle();
+
+        // Tombol untuk membuka window baru
         driver.findElement(By.id("openwindow")).click();
 
-        Set<String> windows = driver.getWindowHandles();
+        // Mendapatkan semua window handles
+        Set<String> windowHandles = driver.getWindowHandles();
 
-        System.out.println("Ini adalah windows" + windows);
+        // Cetak semua window handles untuk debugging
+        System.out.println("Window Handles: " + windowHandles);
 
-        driver.switchTo().window("DF220471DCB65795E3EF30531088DA00");
+        // Berpindah ke window baru (yang bukan original window)
+        for (String handle : windowHandles) {
+            if (!handle.equals(originalWindow)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
 
-        Thread.sleep(3000);
+        Thread.sleep(5000);
+
         driver.close();
 
-        /*-------------MASIH ERROR------------- */
+        driver.switchTo().window(originalWindow);
+        Thread.sleep(4000);
+
+        driver.quit();
     }
 }
