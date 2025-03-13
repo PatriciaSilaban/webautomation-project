@@ -12,111 +12,117 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class StandAloneTest {
-    public static void main(String[] args) throws InterruptedException {
-        /*
-         * 1. Implement e2e test for checkout
-         * 2. Wait != Thread
-         * Stream
-         */
+        public static void main(String[] args) throws InterruptedException {
+                /*
+                 * 1. Implement e2e test for checkout
+                 * 2. Wait != Thread
+                 * Stream
+                 */
 
-        /*
-         * Scenario Automation
-         * 1. Buyer login
-         * 2. Buyer checkout product
-         * 3. Verifikasi thanks page
-         */
+                /*
+                 * Scenario Automation
+                 * 1. Buyer login
+                 * 2. Buyer checkout product
+                 * 3. Verifikasi thanks page
+                 */
 
-        // Setup Driver
-        System.setProperty("webdriver.chrome.driver", "C:/afterofficebootcamp/webautomationproject/chromedriver.exe");
+                // Setup Driver
+                System.setProperty("webdriver.chrome.driver",
+                                "C:/afterofficebootcamp/webautomationproject/chromedriver.exe");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://rahulshettyacademy.com/client");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+                WebDriver driver = new ChromeDriver();
+                driver.get("https://rahulshettyacademy.com/client");
+                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("userEmail")));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("userEmail")));
 
-        // Scenario Login
-        driver.findElement(By.id("userEmail")).sendKeys("patriciasilaban99@gmail.com");
-        driver.findElement(By.id("userPassword")).sendKeys("Silaban99");
+                // Scenario Login
+                driver.findElement(By.id("userEmail")).sendKeys("patriciasilaban99@gmail.com");
+                driver.findElement(By.id("userPassword")).sendKeys("Silaban99");
 
-        driver.findElement(By.id("login")).click();
+                driver.findElement(By.id("login")).click();
 
-        Thread.sleep(5000);
+                Thread.sleep(5000);
 
-        // List Product
+                // List Product
 
-        List<WebElement> listProduct = driver.findElements(By.cssSelector(".mb-3"));
+                List<WebElement> listProduct = driver.findElements(By.cssSelector(".mb-3"));
 
-        String productName = "ZARA COAT 3";
+                String productName = "ZARA COAT 3";
 
-        WebElement product = listProduct.stream()
-                .filter(prod -> prod.findElement(By.cssSelector("b")).getText().equals(productName)).findFirst()
-                .orElse(null);
+                WebElement product = listProduct.stream()
+                                .filter(prod -> prod.findElement(By.cssSelector("b")).getText().equals(productName))
+                                .findFirst()
+                                .orElse(null);
 
-        product.findElement(
-                By.xpath("//div[@class='card-body']//child::button//child::i[@class='fa fa-shopping-cart']")).click();
+                product.findElement(
+                                By.xpath("//div[@class='card-body']//child::button//child::i[@class='fa fa-shopping-cart']"))
+                                .click();
 
-        System.out.println("list product" + product);
+                System.out.println("list product" + product);
 
-        Thread.sleep(3000);
+                Thread.sleep(3000);
 
-        // wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.xpath("//ngx-spinner[@class
-        // = 'ng-star-inserted']"))));
+                // wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.xpath("//ngx-spinner[@class
+                // = 'ng-star-inserted']"))));
 
-        driver.findElement(By.cssSelector("[routerlink*='cart']")).click();
+                driver.findElement(By.cssSelector("[routerlink*='cart']")).click();
 
-        Thread.sleep(4000);
+                Thread.sleep(4000);
 
-        driver.findElement(By.cssSelector(".totalRow button"));
+                driver.findElement(By.cssSelector(".totalRow button")).click();
 
-        // driver.findElement(By.cssSelector("[placeholder = 'Select
-        // Country']")).sendKeys("Indonesia");
+                Thread.sleep(3000);
 
-        // CARA LAIN UNTUK SELECT COUNTRY NYA
+                // driver.findElement(By.cssSelector("[placeholder = 'Select
+                // Country']")).sendKeys("Indonesia");
 
-        Actions action = new Actions(driver);
+                // CARA LAIN UNTUK SELECT COUNTRY NYA
 
-        action.sendKeys(driver.findElement(By.cssSelector("[placeholder = 'Select Country']")), "ind").build()
-                .perform();
+                Actions action = new Actions(driver);
 
-        Thread.sleep(3000);
+                action.sendKeys(driver.findElement(By.cssSelector("[placeholder = 'Select Country']")), "ind").build()
+                                .perform();
 
-        String destination = "Indonesia";
+                Thread.sleep(3000);
 
-        List<WebElement> country = driver.findElements(By.xpath("//span[@class='ng-star-inserted']"));
+                String destination = "Indonesia";
 
-        // System.out.println(country.get(0).getText());
+                List<WebElement> country = driver.findElements(By.xpath("//span[@class='ng-star-inserted']"));
 
-        // // MENGGUNAKAN LOOPING
+                // System.out.println(country.get(0).getText());
 
-        // for (WebElement cont : country) {
-        // if (cont.getText().equalsIgnoreCase(destination)) {
-        // cont.click();
-        // break;
-        // }
-        // }
+                // // MENGGUNAKAN LOOPING
 
-        // MENGGUNAKAN STREAM
+                // for (WebElement cont : country) {
+                // if (cont.getText().equalsIgnoreCase(destination)) {
+                // cont.click();
+                // break;
+                // }
+                // }
 
-        WebElement cont = country.stream().filter(cont2 -> cont2.getText().equalsIgnoreCase(destination)).findFirst()
-                .orElse(null);
-        cont.click();
+                // MENGGUNAKAN STREAM
 
-        Thread.sleep(3000);
+                WebElement cont = country.stream().filter(cont2 -> cont2.getText().equalsIgnoreCase(destination))
+                                .findFirst()
+                                .orElse(null);
+                cont.click();
 
-        driver.findElement(By.cssSelector(".action__submit")).click();
+                Thread.sleep(3000);
 
-        Thread.sleep(3000);
+                driver.findElement(By.cssSelector(".action__submit")).click();
 
-        String confirmationPage = driver.findElement(By.className("hero-primary")).getText();
+                Thread.sleep(3000);
 
-        System.out.println("Buyer berhasil checkout " + confirmationPage);
+                String confirmationPage = driver.findElement(By.className("hero-primary")).getText();
 
-        Thread.sleep(3000);
+                System.out.println("Buyer berhasil checkout " + confirmationPage);
 
-        driver.close();
+                Thread.sleep(3000);
 
-    }
+                driver.close();
+
+        }
 }
