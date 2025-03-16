@@ -4,8 +4,12 @@ import java.time.Duration;
 import java.util.HashMap;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -56,8 +60,15 @@ public class StandAloneTesNGImpl2Test {
 
         OrderPage orderPage = new OrderPage(driver);
         orderPage.selectCountry(destination);
-        Thread.sleep(2000);
-        orderPage.submitOrder();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement submitButton = wait
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".action__submit")));
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
+        Thread.sleep(1000);
+
+        submitButton.click();
 
         ConfirmationPage confirmationPage = new ConfirmationPage(driver);
 
